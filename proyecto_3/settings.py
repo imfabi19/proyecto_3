@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'  # Añadimos el rest_framework aquí :),
-    'mascotas'
+    'rest_framework',  # Añadimos el rest_framework aquí :),
+    'mascotas',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'proyecto_3.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME':  'proyecto_3',
         'USER': 'root',
         'PASSWORD': '',
