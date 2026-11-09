@@ -44,14 +44,15 @@ function Crud(props: {
     e.preventDefault()
     let result
     if (editing) {
-      // PATCH: solo se envían los campos que cambiaron.
+      // PATCH estándar de DRF: /recurso/id/
       const changed = fields.filter((f) => form[f.name] !== String(editing[f.name]))
       if (changed.length === 0) return reset()
       const body = Object.fromEntries(changed.map((f) => [f.name, convert(f)]))
-      result = await call('PATCH', `/${path}/modificar/${editing.id}`, body)
+      result = await call('PATCH', `/${path}/${editing.id}/`, body)
     } else {
+      // POST estándar de DRF: /recurso/
       const body = Object.fromEntries(fields.map((f) => [f.name, convert(f)]))
-      result = await call('POST', `/${path}/crear`, body)
+      result = await call('POST', `/${path}/`, body)
     }
     if (!result.ok) return setError(errorText(result))
     reset()
@@ -60,7 +61,8 @@ function Crud(props: {
 
   const remove = async (row: Row) => {
     if (!window.confirm(deleteWarning)) return
-    const result = await call('DELETE', `/${path}/eliminar/${row.id}`)
+    // DELETE estándar de DRF: /recurso/id/
+    const result = await call('DELETE', `/${path}/${row.id}/`)
     if (!result.ok) return setError(errorText(result))
     if (editing?.id === row.id) reset()
     reload()
@@ -70,17 +72,17 @@ function Crud(props: {
     <section className="card">
       <h2>{title}</h2>
       <form onSubmit={submit}>
-        {fields.map((f) => (
+        {fields?.map((f) => (
           <label key={f.name}>
             {f.label}
             {f.options ? (
               <select
                 required
-                value={form[f.name]}
+                value={form[f.name] || ''}
                 onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
               >
                 <option value="">Elegir</option>
-                {f.options.map((o) => (
+                {f.options?.map((o) => (
                   <option key={o.value} value={o.value}>
                     {o.label}
                   </option>
@@ -90,7 +92,7 @@ function Crud(props: {
               <input
                 required
                 type={f.type ?? 'text'}
-                value={form[f.name]}
+                value={form[f.name] || ''}
                 onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
               />
             )}
@@ -110,16 +112,16 @@ function Crud(props: {
       <table>
         <thead>
           <tr>
-            {columns.map((c) => (
+            {columns?.map((c) => (
               <th key={c.label}>{c.label}</th>
             ))}
             <th />
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
+          {rows?.map((row) => (
             <tr key={row.id} className={editing?.id === row.id ? 'active' : ''}>
-              {columns.map((c) => (
+              {columns?.map((c) => (
                 <td key={c.label}>{c.value(row)}</td>
               ))}
               <td className="row-actions">
@@ -132,7 +134,7 @@ function Crud(props: {
               </td>
             </tr>
           ))}
-          {rows.length === 0 && (
+          {(!rows || rows.length === 0) && (
             <tr>
               <td colSpan={columns.length + 1} className="empty">
                 Sin datos
@@ -164,7 +166,7 @@ export default function App() {
   }, [reload])
 
   const nombreResponsable = (id: number) =>
-    String(responsables.find((r) => r.id === id)?.nombre ?? `#${id}`)
+    String(responsables?.find((r) => r.id === id)?.nombre ?? `#${id}`)
 
   return (
     <main>
@@ -178,7 +180,7 @@ export default function App() {
       <div className="grid">
         <Crud
           title="Responsables"
-          path="responsable"
+          path="responsables"
           rows={responsables}
           reload={reload}
           deleteWarning="¿Borrar este responsable y todas sus mascotas?"
@@ -197,7 +199,7 @@ export default function App() {
 
         <Crud
           title="Mascotas"
-          path="mascota"
+          path="mascotas"
           rows={mascotas}
           reload={reload}
           deleteWarning="¿Borrar esta mascota?"
@@ -208,7 +210,7 @@ export default function App() {
             {
               name: 'responsable',
               label: 'Responsable',
-              options: responsables.map((r) => ({ value: r.id, label: String(r.nombre) })),
+              options: responsables?.map((r) => ({ value: r.id, label: String(r.nombre) })) || [],
             },
           ]}
           columns={[
@@ -223,7 +225,7 @@ export default function App() {
 
       <section className="card log">
         <h2>Últimas peticiones</h2>
-        {logs.map((l, i) => (
+        {logs?.map((l, i) => (
           <div key={i} className="log-row">
             <span className={`method ${l.method}`}>{l.method}</span>
             <code>{l.url}</code>

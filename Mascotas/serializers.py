@@ -14,4 +14,4 @@ class MascotaSerializer(serializers.ModelSerializer):
     # Si el id no existe, el serializer responde error de validación (400).
     class Meta:
         model = Mascota
-        fields = ['id', 'nombre', 'anio_nacimiento', 'especie', 'responsable']
+        fields = ['id', 'nombre', 'año_nacimiento', 'especie', 'responsable']
