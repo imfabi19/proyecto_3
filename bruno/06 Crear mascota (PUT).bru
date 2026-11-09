@@ -1,0 +1,24 @@
+meta {
+  name: Crear mascota (PUT)
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/mascota/crear
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Toby",
+    "anio_nacimiento": 2019,
+    "especie": "Perro",
+    "responsable": {{responsableId}}
+  }
+}
+
+assert {
+  res.status: eq 201
+}

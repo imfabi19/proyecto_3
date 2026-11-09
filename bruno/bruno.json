@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Proyecto3 API Mascotas",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,31 @@
+meta {
+  name: Crear responsable
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/responsable/crear
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Ana Pérez",
+    "correo": "{{correo}}",
+    "rut": "11111111-1"
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:pre-request {
+  bru.setVar("correo", `ana${Date.now()}@ejemplo.cl`);
+}
+
+script:post-response {
+  bru.setVar("responsableId", res.body.id);
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Modificar responsable (PATCH parcial)
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/responsable/modificar/{{responsableId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "rut": "22222222-2"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

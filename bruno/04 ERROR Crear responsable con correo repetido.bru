@@ -1,0 +1,23 @@
+meta {
+  name: ERROR Crear responsable con correo repetido
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/responsable/crear
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Otra Ana",
+    "correo": "{{correo}}",
+    "rut": "33333333-3"
+  }
+}
+
+assert {
+  res.status: eq 400
+}

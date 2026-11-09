@@ -1,0 +1,15 @@
+meta {
+  name: ERROR Llamar mascotas con DELETE
+  type: http
+  seq: 13
+}
+
+delete {
+  url: {{baseUrl}}/mascotas
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 405
+}

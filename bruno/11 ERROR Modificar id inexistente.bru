@@ -1,0 +1,21 @@
+meta {
+  name: ERROR Modificar id inexistente
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{baseUrl}}/mascota/modificar/999999
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "especie": "Gato"
+  }
+}
+
+assert {
+  res.status: eq 404
+}

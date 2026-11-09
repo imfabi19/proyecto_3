@@ -1,0 +1,21 @@
+meta {
+  name: Modificar mascota (PATCH parcial)
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/mascota/modificar/{{mascotaId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "especie": "Felino"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

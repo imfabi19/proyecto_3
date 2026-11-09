@@ -1,0 +1,24 @@
+meta {
+  name: ERROR Crear mascota con responsable inexistente
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/mascota/crear
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Huérfana",
+    "anio_nacimiento": 2020,
+    "especie": "Gato",
+    "responsable": 999999
+  }
+}
+
+assert {
+  res.status: eq 400
+}

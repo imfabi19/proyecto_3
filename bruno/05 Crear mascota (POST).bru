@@ -1,0 +1,28 @@
+meta {
+  name: Crear mascota (POST)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/mascota/crear
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Luna",
+    "anio_nacimiento": 2021,
+    "especie": "Gato",
+    "responsable": {{responsableId}}
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("mascotaId", res.body.id);
+}
